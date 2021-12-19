@@ -14,5 +14,7 @@ namespace IBKS.DataAccess.Interfaces
         TModel Insert(TModel model);
 
         void Delete(TModel model);
+
+        void Delete(int id);
     }
 }

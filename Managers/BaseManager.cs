@@ -77,7 +77,7 @@ namespace IBKS.Managers.Infrastructure
 
         public virtual void Delete(int id)
         {
-
+            _repository.Delete(id);
         }
 
         public virtual void PreSaveInternal(TModel model) { }

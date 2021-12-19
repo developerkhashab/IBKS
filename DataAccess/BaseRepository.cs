@@ -18,8 +18,20 @@ namespace IBKS.DataAccess
         }
         public virtual void Delete(TModel model)
         {
-            model.IsRemoved = true;
-            Update(model);
+            Delete(model.Id);
+        }
+
+        public virtual void Delete(int id)
+        {
+            var record = GetT(id);
+            if (record == null)
+            {
+                throw new NullReferenceException("Record is not found");
+            }
+            record.LastModified = DateTime.UtcNow;
+            record.IsRemoved = true;
+            var entity = _context.Set<TModel>().Update(record);
+            _context.SaveChanges();
         }
 
         public virtual List<TModel> GetAll()
@@ -48,8 +60,8 @@ namespace IBKS.DataAccess
             {
                 throw new NullReferenceException("Record is not found");
             }
-            record.LastModified = DateTime.UtcNow;
-            var entity = _context.Set<TModel>().Update(record);
+            model.LastModified = DateTime.UtcNow;
+            var entity = _context.Set<TModel>().Update(model);
             _context.SaveChanges();
             return entity.Entity;
         }

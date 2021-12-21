@@ -8,7 +8,6 @@ namespace IBKS.Context.Entities
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public string UserName { get; set; }
         public string Country { get; set; }
         public DateTime DOB { get; set; }
 

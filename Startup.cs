@@ -62,7 +62,10 @@ namespace IBKS
             {
                 c.SwaggerEndpoint(url: "/swagger/v1/swagger.json", name: "My API V1");
             });
-
+            app.UseCors(builder => builder
+     .AllowAnyOrigin()
+     .AllowAnyMethod()
+     .AllowAnyHeader());
             //app.UseAuthorization();
             app.UseDeveloperExceptionPage();
             app.UseEndpoints(endpoints =>

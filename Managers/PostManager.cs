@@ -2,6 +2,7 @@
 using IBKS.DataAccess.Interfaces;
 using IBKS.Managers.Infrastructure;
 using IBKS.Managers.Interfaces;
+using System;
 using System.Linq;
 
 namespace IBKS.Managers
@@ -9,9 +10,11 @@ namespace IBKS.Managers
     public class PostManager : BaseManager<Post>, IPostManager
     {
         private readonly ICommentManager _commentManager;
-        public PostManager(IPostRepository postRepository, ICommentManager commentManager) : base(postRepository)
+        private readonly IUserManager _userManager;
+        public PostManager(IPostRepository postRepository, ICommentManager commentManager, IUserManager userManager) : base(postRepository)
         {
             _commentManager = commentManager;
+            _userManager = userManager;
         }
 
         public override void Delete(int postId)
@@ -27,6 +30,16 @@ namespace IBKS.Managers
             {
                 Delete(post);
             }
+        }
+
+        public override void PreSaveInternal(Post model)
+        {
+            var user = _userManager.GetById(model.UserId);
+            if (user == null)
+            {
+                throw new NullReferenceException("user not found");
+            }
+            base.PreSaveInternal(model);
         }
 
     }

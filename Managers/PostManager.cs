@@ -2,20 +2,31 @@
 using IBKS.DataAccess.Interfaces;
 using IBKS.Managers.Infrastructure;
 using IBKS.Managers.Interfaces;
+using System.Linq;
 
 namespace IBKS.Managers
 {
     public class PostManager : BaseManager<Post>, IPostManager
     {
-        private readonly IPostRepository _postRepository;
-        public PostManager(IPostRepository postRepository) : base(postRepository)
+        private readonly ICommentManager _commentManager;
+        public PostManager(IPostRepository postRepository, ICommentManager commentManager) : base(postRepository)
         {
-            _postRepository = postRepository;
+            _commentManager = commentManager;
         }
 
-        public dynamic test()
+        public override void Delete(int postId)
         {
-            return _postRepository.testme();
+            _commentManager.DeleteCommentsByPostId(postId);
+            base.Delete(postId);
+        }
+
+        public void DeletePostsByUserId(int userId)
+        {
+            var posts = IQueryable(x => x.UserId == userId).Select(x => x.Id).ToList();
+            foreach (var post in posts)
+            {
+                Delete(post);
+            }
         }
 
     }

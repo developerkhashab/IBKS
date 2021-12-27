@@ -19,7 +19,7 @@ namespace IBKS.Controllers
         [HttpGet("Posts")]
         public virtual List<Post> GetALLPosts()
         {
-            return _context.Posts.ToList();
+            return _context.Posts.IncludeMultiple(c => c.Comments).ToList();
         }
 
         [HttpGet("Users")]
@@ -31,7 +31,7 @@ namespace IBKS.Controllers
         [HttpGet("Comments")]
         public virtual List<Comment> GetALLComments()
         {
-            return _context.Comments.ToList();
+            return _context.Comments.IncludeMultiple(c => c.Post).ToList();
         }
     }
 }

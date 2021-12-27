@@ -9,7 +9,7 @@ using System.Linq.Expressions;
 
 namespace IBKS.DataAccess
 {
-    public abstract class BaseRepository<TModel> : IBaseRepository<TModel> where TModel : ApiModel
+    public class BaseRepository<TModel> : IBaseRepository<TModel> where TModel : ApiModel
     {
         private readonly DBContext _context;
         protected BaseRepository(DBContext context)
@@ -19,6 +19,14 @@ namespace IBKS.DataAccess
         public virtual void Delete(TModel model)
         {
             Delete(model.Id);
+        }
+
+        public virtual void Delete(List<int> ids)
+        {
+            foreach (var id in ids)
+            {
+                Delete(id);
+            }
         }
 
         public virtual void Delete(int id)
@@ -55,7 +63,7 @@ namespace IBKS.DataAccess
 
         public virtual TModel Update(TModel model)
         {
-            var record = GetT(model.Id);
+            var record = _context.Set<TModel>().AsNoTracking().FirstOrDefault(x => x.Id == model.Id && !x.IsRemoved);
             if (record == null)
             {
                 throw new NullReferenceException("Record is not found");
@@ -64,6 +72,11 @@ namespace IBKS.DataAccess
             var entity = _context.Set<TModel>().Update(model);
             _context.SaveChanges();
             return entity.Entity;
+        }
+
+        public List<TModel> IQueryable(Expression<Func<TModel, bool>> expression)
+        {
+            return _context.Set<TModel>().Where(expression).Where(x => !x.IsRemoved).ToList();
         }
 
         public virtual IQueryable<T> IncludeMultiple<T>(IQueryable<T> query, params Expression<Func<T, object>>[] includes)where T : ApiModel

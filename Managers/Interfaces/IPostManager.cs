@@ -4,6 +4,6 @@ namespace IBKS.Managers.Interfaces
 {
     public interface IPostManager : IBaseManager<Post>
     {
-        dynamic test();
+        void DeletePostsByUserId(int userId);
     }
 }

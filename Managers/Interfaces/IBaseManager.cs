@@ -1,5 +1,7 @@
 ﻿using IBKS.Models;
+using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 
 namespace IBKS.Managers.Interfaces
 {
@@ -20,6 +22,10 @@ namespace IBKS.Managers.Interfaces
 
         void Delete(int id);
 
+        List<TModel> IQueryable(Expression<Func<TModel, bool>> expression);
+
         void PreSaveInternal(TModel model);
+
+        void Delete(List<int> ids);
     }
 }

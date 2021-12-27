@@ -26,6 +26,7 @@ namespace IBKS
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
             services.AddScoped<IUserManager, UserManager>();
             services.AddScoped<IPostManager, PostManager>();
             services.AddScoped<ICommentManager, CommentManager>();
@@ -40,9 +41,9 @@ namespace IBKS
                 .AddNewtonsoftJson(options =>
                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
             );
-            services.AddSwaggerGen(c => 
+            services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc(name:"v1", new OpenApiInfo {Title= "MY API", Version = "v1" });
+                c.SwaggerDoc(name: "v1", new OpenApiInfo { Title = "MY API", Version = "v1" });
             });
         }
 
@@ -63,9 +64,9 @@ namespace IBKS
                 c.SwaggerEndpoint(url: "/swagger/v1/swagger.json", name: "My API V1");
             });
             app.UseCors(builder => builder
-     .AllowAnyOrigin()
-     .AllowAnyMethod()
-     .AllowAnyHeader());
+                 .AllowAnyOrigin()
+                 .AllowAnyMethod()
+                 .AllowAnyHeader());
             //app.UseAuthorization();
             app.UseDeveloperExceptionPage();
             app.UseEndpoints(endpoints =>

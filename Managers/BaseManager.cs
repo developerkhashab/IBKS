@@ -1,7 +1,9 @@
 ﻿using IBKS.DataAccess.Interfaces;
 using IBKS.Managers.Interfaces;
 using IBKS.Models;
+using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 
 namespace IBKS.Managers.Infrastructure
 {
@@ -78,6 +80,16 @@ namespace IBKS.Managers.Infrastructure
         public virtual void Delete(int id)
         {
             _repository.Delete(id);
+        }
+
+        public virtual void Delete(List<int> ids)
+        {
+            _repository.Delete(ids);
+        }
+
+        public List<TModel> IQueryable(Expression<Func<TModel, bool>> expression)
+        {
+            return _repository.IQueryable(expression);
         }
 
         public virtual void PreSaveInternal(TModel model) { }

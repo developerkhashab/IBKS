@@ -9,7 +9,7 @@ namespace IBKS.Context.Entities
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Country { get; set; }
-        public DateTime DOB { get; set; }
+        public DateTime? DOB { get; set; }
 
         public IList<Post> Posts { get; set; }
         public IList<Comment> Comments { get; set; }

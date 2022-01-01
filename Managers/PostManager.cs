@@ -2,7 +2,6 @@
 using IBKS.DataAccess.Interfaces;
 using IBKS.Managers.Infrastructure;
 using IBKS.Managers.Interfaces;
-using System;
 using System.Linq;
 
 namespace IBKS.Managers

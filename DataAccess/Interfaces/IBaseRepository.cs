@@ -22,5 +22,7 @@ namespace IBKS.DataAccess.Interfaces
         List<TModel> IQueryable(Expression<Func<TModel, bool>> expression);
 
         void Delete(List<int> ids);
+
+        TModel GetTTTTTT(int id);
     }
 }

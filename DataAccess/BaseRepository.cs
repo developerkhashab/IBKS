@@ -3,6 +3,7 @@ using IBKS.DataAccess.Interfaces;
 using IBKS.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -50,6 +51,20 @@ namespace IBKS.DataAccess
         public virtual TModel GetT(int id)
         {
             return _context.Set<TModel>().FirstOrDefault(x => x.Id == id && !x.IsRemoved);
+        }
+
+        public virtual Expression<Func<TModel, object>>[] EntityIncludes()
+        {
+            return null;
+        }
+
+        public virtual TModel GetTTTTTT(int id)
+        {
+            var includes = typeof(TModel).GetProperties()
+                     .Where(p => (typeof(IEnumerable).IsAssignableFrom(p.PropertyType) && p.PropertyType != typeof(string)) || p.PropertyType.Namespace == typeof(TModel).Namespace)
+                     .Select(x => x.PropertyType)
+                     .ToArray();
+            return _context.Set<TModel>().IncludeMultiple(EntityIncludes()).FirstOrDefault(x => x.Id == id && !x.IsRemoved);
         }
 
         public virtual TModel Insert(TModel model)

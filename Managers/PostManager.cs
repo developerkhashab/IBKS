@@ -10,11 +10,9 @@ namespace IBKS.Managers
     public class PostManager : BaseManager<Post>, IPostManager
     {
         private readonly ICommentManager _commentManager;
-        private readonly IUserManager _userManager;
-        public PostManager(IPostRepository postRepository, ICommentManager commentManager, IUserManager userManager) : base(postRepository)
+        public PostManager(IPostRepository postRepository, ICommentManager commentManager) : base(postRepository)
         {
             _commentManager = commentManager;
-            _userManager = userManager;
         }
 
         public override void Delete(int postId)
@@ -31,16 +29,5 @@ namespace IBKS.Managers
                 Delete(post);
             }
         }
-
-        public override void PreSaveInternal(Post model)
-        {
-            var user = _userManager.GetById(model.UserId);
-            if (user == null)
-            {
-                throw new NullReferenceException("user not found");
-            }
-            base.PreSaveInternal(model);
-        }
-
     }
 }

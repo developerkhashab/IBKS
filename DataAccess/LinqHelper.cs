@@ -19,6 +19,7 @@ namespace IBKS.DataAccess
 
             return query;
         }
+
         public static IOrderedQueryable<T> OrderBy<T>(this IQueryable<T> source, string property)
         {
             return ApplyOrder<T>(source, property, "OrderBy");

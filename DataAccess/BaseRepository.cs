@@ -45,25 +45,21 @@ namespace IBKS.DataAccess
 
         public virtual List<TModel> GetAll()
         {
-            return _context.Set<TModel>().Where(x => !x.IsRemoved).ToList();
+            return _context.Set<TModel>().IncludeMultiple(EntityIncludes()).Where(x => !x.IsRemoved).ToList();
         }
 
         public virtual TModel GetT(int id)
         {
-            return _context.Set<TModel>().FirstOrDefault(x => x.Id == id && !x.IsRemoved);
+            return _context.Set<TModel>().IncludeMultiple(EntityIncludes()).FirstOrDefault(x => x.Id == id && !x.IsRemoved);
         }
 
         public virtual Expression<Func<TModel, object>>[] EntityIncludes()
         {
-            return null;
+            return new List<Expression<Func<TModel, object>>>().ToArray();
         }
 
         public virtual TModel GetTTTTTT(int id)
         {
-            var includes = typeof(TModel).GetProperties()
-                     .Where(p => (typeof(IEnumerable).IsAssignableFrom(p.PropertyType) && p.PropertyType != typeof(string)) || p.PropertyType.Namespace == typeof(TModel).Namespace)
-                     .Select(x => x.PropertyType)
-                     .ToArray();
             return _context.Set<TModel>().IncludeMultiple(EntityIncludes()).FirstOrDefault(x => x.Id == id && !x.IsRemoved);
         }
 

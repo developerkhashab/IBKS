@@ -1,21 +1,26 @@
 ﻿using IBKS.Context;
 using IBKS.Context.Entities;
 using IBKS.DataAccess.Interfaces;
+using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 
 namespace IBKS.DataAccess
 {
     public class UserRepository : BaseRepository<User>, IUserRepository
     {
-        private readonly DBContext _context;
         public UserRepository(DBContext context) : base(context)
         {
-            _context = context;
         }
 
-        public override User GetT(int id)
+        public override Expression<Func<User, object>>[] EntityIncludes()
         {
-            return _context.Users.IncludeMultiple(c => c.Posts).FirstOrDefault(x => x.Id == id);
+            var includes = new List<Expression<Func<User, object>>>();
+            includes.Add(c => c.Comments);
+            includes.Add(c => c.Posts);
+
+            return includes.ToArray();
         }
     }
 }

@@ -29,11 +29,5 @@ namespace IBKS.Controllers
         {
             return _context.Users.IncludeMultiple(c => c.Posts);
         }
-
-        [HttpGet("getme")]
-        public virtual dynamic GetMe()
-        {
-            return _postRepository.GetTTTTTT(21);
-        }
     }
 }

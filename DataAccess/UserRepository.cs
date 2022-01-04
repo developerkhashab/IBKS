@@ -17,8 +17,8 @@ namespace IBKS.DataAccess
         public override Expression<Func<User, object>>[] EntityIncludes()
         {
             var includes = new List<Expression<Func<User, object>>>();
-            includes.Add(c => c.Comments);
-            includes.Add(c => c.Posts);
+            includes.Add(c => c.Comments.Where(x => !x.IsRemoved));
+            includes.Add(c => c.Posts.Where(x => !x.IsRemoved));
 
             return includes.ToArray();
         }

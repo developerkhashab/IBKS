@@ -58,11 +58,6 @@ namespace IBKS.DataAccess
             return new List<Expression<Func<TModel, object>>>().ToArray();
         }
 
-        public virtual TModel GetTTTTTT(int id)
-        {
-            return _context.Set<TModel>().IncludeMultiple(EntityIncludes()).FirstOrDefault(x => x.Id == id && !x.IsRemoved);
-        }
-
         public virtual TModel Insert(TModel model)
         {
             var entity = _context.Set<TModel>().Add(model);
